@@ -1,1 +1,0 @@
-<swiper class="home-swiper"><block wx:for="{{tab}}" wx:for-item="item" wx:for-index="index" wx:key="index"><swiper-item class="swiper-item"><list-item vue-id="{{'8fab5f7c-1-'+index}}" bind:__l="__l"></list-item></swiper-item></block></swiper>
