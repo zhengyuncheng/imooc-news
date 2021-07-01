@@ -2,15 +2,10 @@
 	<view class="home">
 		<!-- 自定义导航栏 -->
 		<navbar></navbar>
-		<tab :list="tabList" @tab="tab"></tab>
+		<tab :list="tabList" @tab="tab" :tabIndex='tabIndex'></tab>
 		<view class="home-list">
-			<list :tab='tabList'></list>
+			<list :tab='tabList' :activeIndex='activeIndex' @change='change'></list>
 		</view>
-		<!-- <list-scroll>
-			<list-card mode='base'></list-card>
-			<list-card mode='image'></list-card>
-			<list-card mode='column'></list-card>
-		</list-scroll> -->
 	</view>
 </template>
 
@@ -23,21 +18,30 @@
 		// },
 		data() {
 			return {
-				tabList: []
+				tabList: [],
+				tabIndex: 0,
+				activeIndex: 0
 			}
 		},
 		onLoad() {
 			this.getLabel()
 		},
 		methods: {
+			change(current){
+				this.tabIndex = current
+				this.activeIndex = current
+			},
 			getLabel() {
 				// 调用云函数方法
 				this.$api.get_label().then(res => {
 					this.tabList = res.data
+					this.tabList.unshift({
+						name: '全部'
+					})
 				})
 			},
 			tab({data, index}) {
-				
+				this.activeIndex = index
 			}
 		}
 	}

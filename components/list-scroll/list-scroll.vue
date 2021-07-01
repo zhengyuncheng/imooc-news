@@ -1,13 +1,12 @@
 <template>
 	<view class="scroll">
-		<scroll-view scroll-y class="list-scroll">
+		<scroll-view scroll-y class="list-scroll" @scrolltolower='loadmore'>
 			<view>
 				<slot></slot>
 			</view>
 		</scroll-view>
 	</view>
 </template>
-
 <script>
 	export default {
 		name: "list-scroll",
@@ -15,6 +14,11 @@
 			return {
 
 			};
+		},
+		methods: {
+			loadmore(){
+				this.$emit('loadmore')
+			}
 		}
 	}
 </script>
