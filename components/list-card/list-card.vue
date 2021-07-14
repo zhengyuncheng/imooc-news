@@ -89,8 +89,22 @@
 			};
 		},
 		methods: {
-			open(){
-				
+			open() {
+				this.$emit('click', this.item) // 点击添加到搜索历史
+				const item = this.item
+				const params = {
+					_id: item._id,
+					title: item.title,
+					author: item.author,
+					create_time: item.create_time,
+					thumbs_up_count: item.thumbs_up_count,
+					browse_count: item.browse_count
+				}
+				console.log(params)
+				// url传参注意长度，可能会被截断
+				uni.navigateTo({
+					url: '/pages/home-detail/home-detail?params=' + JSON.stringify(params)
+				})
 			}
 		}
 	}
@@ -132,7 +146,7 @@
 				line-height: 1.2;
 				padding-right: 30px;
 				position: relative;
-				
+
 				text {
 					overflow: hidden;
 					text-overflow: ellipsis;

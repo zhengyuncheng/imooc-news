@@ -24,6 +24,14 @@
 			}
 		},
 		onLoad() {
+			// 自定义事件, 只能在打开的页面的触发
+			// this.$emit()  uni.$emit()
+			uni.$on('labelChange', (res) => {
+				this.tabIndex = 0
+				this.activeIndex = 0
+				this.tabList = []
+				this.getLabel()
+			})
 			this.getLabel()
 		},
 		methods: {

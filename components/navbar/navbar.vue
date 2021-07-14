@@ -4,8 +4,9 @@
 			<!-- 状态栏 -->
 			<view :style="{height: statusBarHeight + 'px'}"></view>
 			<!-- 导航栏内容 -->
-			<view class="navbar-content" :class="{search: isSearch}" :style="{height: navBarHeight + 'px', width: windowWith + 'px'}" @click.stop='openSearch'>
-				<view class="navbar-content_search-icons" >
+			<view class="navbar-content" :class="{search: isSearch}"
+				:style="{height: navBarHeight + 'px', width: windowWith + 'px'}" @click.stop='openSearch'>
+				<view v-if="isSearch" class="navbar-content_search-icons" @click="back">
 					<uni-icons type="back" size="22" color="#fff"></uni-icons>
 				</view>
 				<view v-if="!isSearch" class="navbar-search">
@@ -20,7 +21,7 @@
 				</view>
 				<view v-if="isSearch" class="navbar-search">
 					<!-- 搜索页显示 -->
-					<input type="text" v-model="value" @input='inputChange' placeholder="请输入您要输入的内容..."/>
+					<input type="text" v-model="val" @input='inputChange' placeholder="请输入您要输入的内容..." />
 				</view>
 			</view>
 		</view>
@@ -36,6 +37,10 @@
 			isSearch: {
 				type: Boolean,
 				default: false
+			},
+			value: {
+				type: [Number, String],
+				default: ''
 			}
 		},
 		data() {
@@ -43,8 +48,13 @@
 				statusBarHeight: 20,
 				navBarHeight: 45,
 				windowWith: 375,
-				value: ''
+				val: ''
 			};
+		},
+		watch: {
+			value(newVal) {
+				this.val = newVal
+			}
 		},
 		created() {
 			// 获取手机系统信息
@@ -58,20 +68,28 @@
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
 			// console.log((menuButtonInfo))
 			// (胶囊底部高度 - 状态栏的高度) + （胶囊顶部高度 - 状态栏内的高度) = 导航栏的高度
-			this.navBarHeight = (menuButtonInfo.bottom - info.statusBarHeight) + (menuButtonInfo.top - info.statusBarHeight)
+			this.navBarHeight = (menuButtonInfo.bottom - info.statusBarHeight) + (menuButtonInfo.top - info
+				.statusBarHeight)
 			this.windowWith = menuButtonInfo.left
 			// #endif
 		},
 		methods: {
-			openSearch(){
+			openSearch() {
 				if (this.isSearch) return
 				uni.navigateTo({
 					url: '/pages/home-search/home-search'
 				})
 			},
 			inputChange(e) {
-				const { value } = e.detail
+				const {
+					value
+				} = e.detail
 				this.$emit('input', value)
+			},
+			back() {
+				uni.switchTab({
+					url: '/pages/tabbar/index/index',
+				})
 			}
 		}
 	}
@@ -96,20 +114,26 @@
 				padding: 0 15px;
 				height: 45px;
 				box-sizing: border-box;
+
 				&.search {
 					padding-left: 0;
+
 					.navbar-content_search-icons {
 						margin-left: 10px;
 						margin-right: 10px;
 					}
+
 					.navbar-search {
 						border-radius: 5px;
+
 						input {
 							font-size: 14px;
 							color: #999;
+							width: 100%;
 						}
 					}
 				}
+
 				.navbar-search {
 					display: flex;
 					align-items: center;

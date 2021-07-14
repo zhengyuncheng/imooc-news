@@ -37,13 +37,17 @@
 		watch: {
 			tab(newVal) {
 				if (newVal.length === 0) return
+				this.listCartData = {}
 				this.getList(this.activeIndex)
 			}
 		},
-		// created() {
-		// 	// tab 还没有赋值
-		// 	this.getList(0)
-		// },
+		created() {
+			// tab 还没有赋值
+			// this.getList(0)
+			uni.$on('update_article', () => {
+				this.getList(this.activeIndex)
+			})
+		},
 		methods: {
 			change(e) {
 				const {
